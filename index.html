@@ -1,49 +1,73 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Entrepreneurship Program</title>
-
-<link rel="stylesheet" href="style.css">
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Entrepreneurship Program</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
+  <div class="page">
+    <div class="container">
+      <h1>Entrepreneurship Program</h1>
 
-<h1>Entrepreneurship Program</h1>
+      <div id="authBox" class="card">
+        <h2>Login / Sign Up</h2>
+        <input id="email" type="email" placeholder="Email" />
+        <input id="password" type="password" placeholder="Password" />
+        <input id="fullName" type="text" placeholder="Full Name (for sign up)" />
+        <div class="row">
+          <button id="loginBtn">Login</button>
+          <button id="signupBtn" class="secondary">Sign Up</button>
+          <button id="logoutBtn" class="danger hidden">Logout</button>
+        </div>
+        <p id="authMessage" class="message"></p>
+      </div>
 
-<div id="login">
+      <div id="dashboard" class="hidden">
+        <div class="card">
+          <h2>My Dashboard</h2>
+          <p><strong>Name:</strong> <span id="userName">-</span></p>
+          <p><strong>Role:</strong> <span id="userRole">-</span></p>
+          <p><strong>Total Income:</strong> $<span id="totalIncome">0</span></p>
+          <p><strong>Total Expenses:</strong> $<span id="totalExpenses">0</span></p>
+          <p><strong>Balance:</strong> $<span id="balance">0</span></p>
+        </div>
 
-<input id="email" placeholder="Email">
-<input id="password" type="password" placeholder="Password">
+        <div class="grid">
+          <div class="card">
+            <h3>Add Money Log</h3>
+            <input id="moneyTitle" type="text" placeholder="What happened?" />
+            <input id="moneyAmount" type="number" step="0.01" placeholder="Amount" />
+            <select id="moneyType">
+              <option value="income">Income</option>
+              <option value="expense">Expense</option>
+            </select>
+            <button id="addMoneyBtn">Add Money Log</button>
+          </div>
 
-<button onclick="login()">Login</button>
+          <div class="card">
+            <h3>Add Goal</h3>
+            <input id="goalTitle" type="text" placeholder="Goal title" />
+            <input id="goalTarget" type="number" step="0.01" placeholder="Target" />
+            <input id="goalCategory" type="text" placeholder="Category" />
+            <button id="addGoalBtn">Add Goal</button>
+          </div>
+        </div>
 
-</div>
+        <div class="card">
+          <h3>My Goals</h3>
+          <div id="goalsList"></div>
+        </div>
 
+        <div class="card">
+          <h3>My Money Logs</h3>
+          <div id="logsList"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<div id="dashboard" style="display:none">
-
-<h2>Dashboard</h2>
-
-<input id="title" placeholder="What happened">
-<input id="amount" placeholder="Amount">
-
-<select id="type">
-<option value="income">Income</option>
-<option value="expense">Expense</option>
-</select>
-
-<button onclick="addMoney()">Add</button>
-
-<h3>Money Logs</h3>
-
-<div id="logs"></div>
-
-</div>
-
-<script src="script.js"></script>
-
+  <script type="module" src="script.js"></script>
 </body>
 </html>
