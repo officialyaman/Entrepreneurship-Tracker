@@ -1,1 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Entrepreneurship Program</title>
 
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+</head>
+
+<body>
+
+<h1>Entrepreneurship Program</h1>
+
+<div id="login">
+
+<input id="email" placeholder="Email">
+<input id="password" type="password" placeholder="Password">
+
+<button onclick="login()">Login</button>
+
+</div>
+
+
+<div id="dashboard" style="display:none">
+
+<h2>Dashboard</h2>
+
+<input id="title" placeholder="What happened">
+<input id="amount" placeholder="Amount">
+
+<select id="type">
+<option value="income">Income</option>
+<option value="expense">Expense</option>
+</select>
+
+<button onclick="addMoney()">Add</button>
+
+<h3>Money Logs</h3>
+
+<div id="logs"></div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
