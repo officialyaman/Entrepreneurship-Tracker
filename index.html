@@ -343,58 +343,57 @@
         </div>
 
         <div id="adminPage" class="hidden">
-          <div class="card">
-            <h2>Admin / Teacher Page</h2>
-            <p>Admins and teachers can view student data here.</p>
+  <div class="card">
+    <h2>Admin / Teacher Page</h2>
+    <p>Admins and teachers can view student data here.</p>
 
-            <select id="studentFilter"></select>
-            <button id="refreshAdminBtn" class="secondary">Refresh Admin Data</button>
-          </div>
+    <select id="studentFilter"></select>
+    <button id="refreshAdminBtn" class="secondary">Refresh Admin Data</button>
+  </div>
 
-          <div class="grid">
-            <div class="card">
-              <h3>Add Money Log for Selected Student</h3>
-              <input id="adminMoneyTitle" type="text" placeholder="What happened?" />
-              <input id="adminMoneyAmount" type="number" step="0.01" placeholder="Amount" />
-              <select id="adminMoneyType">
-                <option value="income">Income</option>
-                <option value="expense">Expense</option>
-              </select>
-              <button id="adminAddMoneyBtn">Add Student Money Log</button>
-            </div>
+  <div class="grid">
+    <div class="card">
+      <h3>Add Money Log for Selected Student</h3>
+      <input id="adminMoneyTitle" type="text" placeholder="What happened?" />
+      <input id="adminMoneyAmount" type="number" step="0.01" placeholder="Amount" />
+      <select id="adminMoneyType">
+        <option value="income">Income</option>
+        <option value="expense">Expense</option>
+      </select>
+      <button id="adminAddMoneyBtn">Add Student Money Log</button>
+    </div>
 
-            <div class="card">
-              <h3>Add Goal for Selected Student</h3>
-              <input id="adminGoalTitle" type="text" placeholder="Goal title" />
-              <input id="adminGoalTarget" type="number" step="0.01" placeholder="Target" />
-              <input id="adminGoalCategory" type="text" placeholder="Category" />
-              <button id="adminAddGoalBtn">Add Student Goal</button>
-              <div class="card">
-              <h3>Reset Selected Student Password</h3>
-              <input id="adminNewPassword" type="text" placeholder="New password">
-              <button id="adminResetPasswordBtn">Set New Password</button>
-              </div>
-          </div>
-
-          <div class="card">
-            <h3>Leaderboard</h3>
-            <div id="leaderboardList"></div>
-          </div>
-
-          <div class="card">
-            <h3>Selected Student Goals</h3>
-            <div id="adminGoalsList"></div>
-          </div>
-
-          <div class="card">
-            <h3>Selected Student Money Logs</h3>
-            <div id="adminLogsList"></div>
-          </div>
-        </div>
-      </div>
+    <div class="card">
+      <h3>Add Goal for Selected Student</h3>
+      <input id="adminGoalTitle" type="text" placeholder="Goal title" />
+      <input id="adminGoalTarget" type="number" step="0.01" placeholder="Target" />
+      <input id="adminGoalCategory" type="text" placeholder="Category" />
+      <button id="adminAddGoalBtn">Add Student Goal</button>
     </div>
   </div>
 
+  <div class="card">
+    <h3>Reset Selected Student Password</h3>
+    <input id="adminNewPassword" type="text" placeholder="New password" />
+    <button id="adminResetPasswordBtn">Set New Password</button>
+  </div>
+
+  <div class="card">
+    <h3>Leaderboard</h3>
+    <div id="leaderboardList"></div>
+  </div>
+
+  <div class="card">
+    <h3>Selected Student Goals</h3>
+    <div id="adminGoalsList"></div>
+  </div>
+
+  <div class="card">
+    <h3>Selected Student Money Logs</h3>
+    <div id="adminLogsList"></div>
+  </div>
+</div>
+  <div><
   <script type="module">
     import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
@@ -454,6 +453,7 @@ const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
     const leaderboardList = document.getElementById("leaderboardList");
     const adminGoalsList = document.getElementById("adminGoalsList");
     const adminLogsList = document.getElementById("adminLogsList");
+    
     const adminNewPassword = document.getElementById("adminNewPassword");
     const adminResetPasswordBtn = document.getElementById("adminResetPasswordBtn");
 
@@ -1011,6 +1011,58 @@ const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
         return;
       }
 
+      async function resetStudentPassword() {
+  try {
+    if (!selectedStudentId) {
+      alert("Select a student first.");
+      return;
+    }
+
+    const new_password = adminNewPassword.value.trim();
+
+    if (!new_password || new_password.length < 6) {
+      alert("Password must be at least 6 characters.");
+      return;
+    }
+
+    const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+
+    if (sessionError || !sessionData?.session) {
+      console.log("Session error:", sessionError);
+      alert("No active session found. Please log in again.");
+      return;
+    }
+
+    const response = await fetch(
+      "https://hrcaisojgvuulwubaqez.supabase.co/functions/v1/admin-reset-password",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${sessionData.session.access_token}`
+        },
+        body: JSON.stringify({
+          user_id: selectedStudentId,
+          new_password: new_password
+        })
+      }
+    );
+
+    const result = await response.json();
+    console.log("Reset password response:", result);
+
+    if (!response.ok) {
+      alert(result.error || "Failed to reset password.");
+      return;
+    }
+
+    adminNewPassword.value = "";
+    alert("Password updated successfully.");
+  } catch (err) {
+    console.log("Reset password error:", err);
+    alert("Something went wrong while resetting the password.");
+  }
+}
       const { error } = await supabase
         .from("goals")
         .insert({
