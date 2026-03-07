@@ -4,71 +4,1090 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Entrepreneurship Program</title>
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f3f4f6;
+      color: #111827;
+    }
+
+    .topbar {
+      display: none;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 24px;
+      background: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .topbar h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .page {
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .screen {
+      display: none;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    .login-wrap {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .login-card {
+      width: 100%;
+      max-width: 460px;
+      background: white;
+      border-radius: 18px;
+      padding: 28px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    }
+
+    .login-card h1 {
+      margin: 0 0 8px;
+      font-size: 38px;
+      line-height: 1.1;
+    }
+
+    .login-card h2 {
+      margin: 0 0 18px;
+      font-size: 24px;
+      color: #374151;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.07);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .stat-box {
+      background: white;
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    }
+
+    .stat-box .label {
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    .stat-box .value {
+      margin-top: 8px;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    input, select, button, textarea {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #d1d5db;
+      font-size: 15px;
+      margin-top: 10px;
+    }
+
+    button {
+      background: #22c55e;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      opacity: 0.95;
+    }
+
+    .secondary { background: #2563eb; }
+    .danger { background: #ef4444; }
+    .dark { background: #111827; }
+    .gray { background: #6b7280; }
+
+    .row {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .row button {
+      flex: 1;
+    }
+
+    .list-item {
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 12px;
+      margin-top: 10px;
+      background: #fafafa;
+    }
+
+    .income {
+      color: #16a34a;
+      font-weight: bold;
+    }
+
+    .expense {
+      color: #dc2626;
+      font-weight: bold;
+    }
+
+    .small {
+      font-size: 13px;
+      color: #6b7280;
+      margin-top: 4px;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .nav-buttons button {
+      width: auto;
+      padding: 10px 16px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .message {
+      margin-top: 14px;
+      font-size: 14px;
+    }
+
+    .role-badge {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #e5f7eb;
+      color: #15803d;
+      font-size: 13px;
+      font-weight: bold;
+      margin-left: 8px;
+    }
+
+    @media (max-width: 900px) {
+      .grid, .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .row {
+        flex-direction: column;
+      }
+
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .topbar-right {
+        width: 100%;
+        justify-content: space-between;
+      }
+    }
+  </style>
 </head>
 <body>
-  <div class="page">
-    <div class="container">
-      <h1>Entrepreneurship Program</h1>
+  <div id="topbar" class="topbar">
+    <h2>
+      Entrepreneurship Program
+      <span id="topRole" class="role-badge">student</span>
+    </h2>
+    <div class="topbar-right">
+      <div><strong id="topName">User</strong></div>
+      <button id="logoutBtn" class="danger" style="width:auto;">Logout</button>
+    </div>
+  </div>
 
-      <div id="authBox" class="card">
-        <h2>Login / Sign Up</h2>
+  <div id="loginScreen" class="screen active">
+    <div class="login-wrap">
+      <div class="login-card">
+        <h1>Entrepreneurship Program</h1>
+        <h2>Login</h2>
+
         <input id="email" type="email" placeholder="Email" />
         <input id="password" type="password" placeholder="Password" />
         <input id="fullName" type="text" placeholder="Full Name (for sign up)" />
+
         <div class="row">
           <button id="loginBtn">Login</button>
           <button id="signupBtn" class="secondary">Sign Up</button>
-          <button id="logoutBtn" class="danger hidden">Logout</button>
-          <button onclick="resetPassword()" class="secondary">Forgot Password</button>
         </div>
+
+        <div class="row">
+          <button id="forgotBtn" class="gray">Forgot Password</button>
+        </div>
+
         <p id="authMessage" class="message"></p>
       </div>
+    </div>
+  </div>
 
-      <div id="dashboard" class="hidden">
-        <div class="card">
-          <h2>My Dashboard</h2>
-          <p><strong>Name:</strong> <span id="userName">-</span></p>
-          <p><strong>Role:</strong> <span id="userRole">-</span></p>
-          <p><strong>Total Income:</strong> $<span id="totalIncome">0</span></p>
-          <p><strong>Total Expenses:</strong> $<span id="totalExpenses">0</span></p>
-          <p><strong>Balance:</strong> $<span id="balance">0</span></p>
+  <div id="appScreen" class="screen">
+    <div class="page">
+      <div class="container">
+        <div class="nav-buttons">
+          <button id="navDashboardBtn" class="dark">Dashboard</button>
+          <button id="navAdminBtn" class="secondary hidden">Admin Page</button>
         </div>
 
-        <div class="grid">
+        <div id="dashboardPage">
           <div class="card">
-            <h3>Add Money Log</h3>
-            <input id="moneyTitle" type="text" placeholder="What happened?" />
-            <input id="moneyAmount" type="number" step="0.01" placeholder="Amount" />
-            <select id="moneyType">
-              <option value="income">Income</option>
-              <option value="expense">Expense</option>
-            </select>
-            <button id="addMoneyBtn">Add Money Log</button>
+            <h2>My Dashboard</h2>
+            <p><strong>Name:</strong> <span id="userName">-</span></p>
+            <p><strong>Role:</strong> <span id="userRole">-</span></p>
+
+            <input id="updateFullName" type="text" placeholder="Update full name" />
+            <button id="saveNameBtn">Save Name</button>
+          </div>
+
+          <div class="stats">
+            <div class="stat-box">
+              <div class="label">Total Income</div>
+              <div class="value">$<span id="totalIncome">0.00</span></div>
+            </div>
+            <div class="stat-box">
+              <div class="label">Total Expenses</div>
+              <div class="value">$<span id="totalExpenses">0.00</span></div>
+            </div>
+            <div class="stat-box">
+              <div class="label">Balance</div>
+              <div class="value">$<span id="balance">0.00</span></div>
+            </div>
+            <div class="stat-box">
+              <div class="label">Goals</div>
+              <div class="value"><span id="goalCount">0</span></div>
+            </div>
+          </div>
+
+          <div class="grid">
+            <div class="card">
+              <h3>Add Money Log</h3>
+              <input id="moneyTitle" type="text" placeholder="What happened?" />
+              <input id="moneyAmount" type="number" step="0.01" placeholder="Amount" />
+              <select id="moneyType">
+                <option value="income">Income</option>
+                <option value="expense">Expense</option>
+              </select>
+              <button id="addMoneyBtn">Add Money Log</button>
+            </div>
+
+            <div class="card">
+              <h3>Add Goal</h3>
+              <input id="goalTitle" type="text" placeholder="Goal title" />
+              <input id="goalTarget" type="number" step="0.01" placeholder="Target amount or number" />
+              <input id="goalCategory" type="text" placeholder="Category" />
+              <button id="addGoalBtn">Add Goal</button>
+            </div>
           </div>
 
           <div class="card">
-            <h3>Add Goal</h3>
-            <input id="goalTitle" type="text" placeholder="Goal title" />
-            <input id="goalTarget" type="number" step="0.01" placeholder="Target" />
-            <input id="goalCategory" type="text" placeholder="Category" />
-            <button id="addGoalBtn">Add Goal</button>
+            <h3>My Goals</h3>
+            <div id="goalsList"></div>
+          </div>
+
+          <div class="card">
+            <h3>My Money Logs</h3>
+            <div id="logsList"></div>
           </div>
         </div>
 
-        <div class="card">
-          <h3>My Goals</h3>
-          <div id="goalsList"></div>
-        </div>
+        <div id="adminPage" class="hidden">
+          <div class="card">
+            <h2>Admin / Teacher Page</h2>
+            <p>Admins and teachers can view student data here.</p>
 
-        <div class="card">
-          <h3>My Money Logs</h3>
-          <div id="logsList"></div>
+            <select id="studentFilter"></select>
+            <button id="refreshAdminBtn" class="secondary">Refresh Admin Data</button>
+          </div>
+
+          <div class="grid">
+            <div class="card">
+              <h3>Add Money Log for Selected Student</h3>
+              <input id="adminMoneyTitle" type="text" placeholder="What happened?" />
+              <input id="adminMoneyAmount" type="number" step="0.01" placeholder="Amount" />
+              <select id="adminMoneyType">
+                <option value="income">Income</option>
+                <option value="expense">Expense</option>
+              </select>
+              <button id="adminAddMoneyBtn">Add Student Money Log</button>
+            </div>
+
+            <div class="card">
+              <h3>Add Goal for Selected Student</h3>
+              <input id="adminGoalTitle" type="text" placeholder="Goal title" />
+              <input id="adminGoalTarget" type="number" step="0.01" placeholder="Target" />
+              <input id="adminGoalCategory" type="text" placeholder="Category" />
+              <button id="adminAddGoalBtn">Add Student Goal</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Leaderboard</h3>
+            <div id="leaderboardList"></div>
+          </div>
+
+          <div class="card">
+            <h3>Selected Student Goals</h3>
+            <div id="adminGoalsList"></div>
+          </div>
+
+          <div class="card">
+            <h3>Selected Student Money Logs</h3>
+            <div id="adminLogsList"></div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <script type="module" src="script.js"></script>
+  <script type="module">
+    import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+    const SUPABASE_URL = "https://hrcaisojgvuulwubaqez.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhyY2Fpc29qZ3Z1dWx3dWJhcWV6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4MjgyNTksImV4cCI6MjA4ODQwNDI1OX0.lavxJpKcDdVPcf6sKDvXmSRNsP092o8TabCfc6g-uSk";
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const loginScreen = document.getElementById("loginScreen");
+    const appScreen = document.getElementById("appScreen");
+    const topbar = document.getElementById("topbar");
+
+    const topName = document.getElementById("topName");
+    const topRole = document.getElementById("topRole");
+
+    const authMessage = document.getElementById("authMessage");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const fullNameInput = document.getElementById("fullName");
+
+    const loginBtn = document.getElementById("loginBtn");
+    const signupBtn = document.getElementById("signupBtn");
+    const forgotBtn = document.getElementById("forgotBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    const navDashboardBtn = document.getElementById("navDashboardBtn");
+    const navAdminBtn = document.getElementById("navAdminBtn");
+
+    const dashboardPage = document.getElementById("dashboardPage");
+    const adminPage = document.getElementById("adminPage");
+
+    const userName = document.getElementById("userName");
+    const userRole = document.getElementById("userRole");
+    const updateFullName = document.getElementById("updateFullName");
+    const saveNameBtn = document.getElementById("saveNameBtn");
+
+    const totalIncome = document.getElementById("totalIncome");
+    const totalExpenses = document.getElementById("totalExpenses");
+    const balance = document.getElementById("balance");
+    const goalCount = document.getElementById("goalCount");
+
+    const moneyTitle = document.getElementById("moneyTitle");
+    const moneyAmount = document.getElementById("moneyAmount");
+    const moneyType = document.getElementById("moneyType");
+    const addMoneyBtn = document.getElementById("addMoneyBtn");
+
+    const goalTitle = document.getElementById("goalTitle");
+    const goalTarget = document.getElementById("goalTarget");
+    const goalCategory = document.getElementById("goalCategory");
+    const addGoalBtn = document.getElementById("addGoalBtn");
+
+    const logsList = document.getElementById("logsList");
+    const goalsList = document.getElementById("goalsList");
+
+    const studentFilter = document.getElementById("studentFilter");
+    const refreshAdminBtn = document.getElementById("refreshAdminBtn");
+    const leaderboardList = document.getElementById("leaderboardList");
+    const adminGoalsList = document.getElementById("adminGoalsList");
+    const adminLogsList = document.getElementById("adminLogsList");
+
+    const adminMoneyTitle = document.getElementById("adminMoneyTitle");
+    const adminMoneyAmount = document.getElementById("adminMoneyAmount");
+    const adminMoneyType = document.getElementById("adminMoneyType");
+    const adminAddMoneyBtn = document.getElementById("adminAddMoneyBtn");
+
+    const adminGoalTitle = document.getElementById("adminGoalTitle");
+    const adminGoalTarget = document.getElementById("adminGoalTarget");
+    const adminGoalCategory = document.getElementById("adminGoalCategory");
+    const adminAddGoalBtn = document.getElementById("adminAddGoalBtn");
+
+    let currentUser = null;
+    let currentProfile = null;
+    let selectedStudentId = null;
+    let allStudents = [];
+
+    function showMessage(msg, isError = false) {
+      authMessage.textContent = msg;
+      authMessage.style.color = isError ? "#dc2626" : "#374151";
+    }
+
+    function isStaff() {
+      return currentProfile && (currentProfile.role === "admin" || currentProfile.role === "teacher");
+    }
+
+    function showLoginScreen() {
+      loginScreen.classList.add("active");
+      appScreen.classList.remove("active");
+      topbar.style.display = "none";
+    }
+
+    function showAppScreen() {
+      loginScreen.classList.remove("active");
+      appScreen.classList.add("active");
+      topbar.style.display = "flex";
+    }
+
+    function showDashboardPage() {
+      dashboardPage.classList.remove("hidden");
+      adminPage.classList.add("hidden");
+    }
+
+    function showAdminPage() {
+      dashboardPage.classList.add("hidden");
+      adminPage.classList.remove("hidden");
+    }
+
+    async function ensureProfile(user, fullNameFromSignup = "") {
+      const { data: existingProfile } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", user.id)
+        .maybeSingle();
+
+      if (existingProfile) {
+        if (!existingProfile.full_name && fullNameFromSignup) {
+          const { data: updated } = await supabase
+            .from("profiles")
+            .update({ full_name: fullNameFromSignup })
+            .eq("id", user.id)
+            .select()
+            .single();
+          return updated || existingProfile;
+        }
+        return existingProfile;
+      }
+
+      const { data, error } = await supabase
+        .from("profiles")
+        .insert({
+          id: user.id,
+          full_name: fullNameFromSignup,
+          role: "student"
+        })
+        .select()
+        .single();
+
+      if (error) {
+        console.error(error);
+        return null;
+      }
+
+      return data;
+    }
+
+    async function login() {
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+      if (error) {
+        showMessage(error.message, true);
+        return;
+      }
+
+      currentUser = data.user;
+      currentProfile = await ensureProfile(currentUser);
+      await loadApp();
+      showMessage("Logged in.");
+    }
+
+    async function signup() {
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+      const fullName = fullNameInput.value.trim();
+
+      if (!fullName) {
+        showMessage("Please enter your full name.", true);
+        return;
+      }
+
+      const { data, error } = await supabase.auth.signUp({ email, password });
+
+      if (error) {
+        showMessage(error.message, true);
+        return;
+      }
+
+      if (!data.user) {
+        showMessage("Signup completed. Check your email if confirmation is enabled.");
+        return;
+      }
+
+      currentUser = data.user;
+      currentProfile = await ensureProfile(currentUser, fullName);
+      await loadApp();
+      showMessage("Account created.");
+    }
+
+    async function forgotPassword() {
+      const email = emailInput.value.trim();
+
+      if (!email) {
+        showMessage("Enter your email first.", true);
+        return;
+      }
+
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.origin
+      });
+
+      if (error) {
+        showMessage(error.message, true);
+        return;
+      }
+
+      showMessage("Password reset email sent.");
+    }
+
+    async function logout() {
+      await supabase.auth.signOut();
+      currentUser = null;
+      currentProfile = null;
+      selectedStudentId = null;
+      showLoginScreen();
+    }
+
+    async function loadProfile() {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", currentUser.id)
+        .single();
+
+      if (error) {
+        console.error(error);
+        return;
+      }
+
+      currentProfile = data;
+
+      userName.textContent = data.full_name || "-";
+      userRole.textContent = data.role || "student";
+      updateFullName.value = data.full_name || "";
+
+      topName.textContent = data.full_name || currentUser.email;
+      topRole.textContent = data.role || "student";
+
+      navAdminBtn.classList.toggle("hidden", !isStaff());
+    }
+
+    async function saveFullNameFn() {
+      const full_name = updateFullName.value.trim();
+
+      if (!full_name) {
+        alert("Enter your real full name.");
+        return;
+      }
+
+      const { error } = await supabase
+        .from("profiles")
+        .update({ full_name })
+        .eq("id", currentUser.id);
+
+      if (error) {
+        alert(error.message);
+        return;
+      }
+
+      await loadProfile();
+      alert("Name updated.");
+    }
+
+    async function loadMyLogs() {
+      const { data, error } = await supabase
+        .from("money_logs")
+        .select("*")
+        .eq("user_id", currentUser.id)
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        logsList.innerHTML = "<p>Could not load logs.</p>";
+        console.error(error);
+        return;
+      }
+
+      logsList.innerHTML = "";
+      let income = 0;
+      let expenses = 0;
+
+      if (!data.length) {
+        logsList.innerHTML = "<p>No money logs yet.</p>";
+      }
+
+      data.forEach((log) => {
+        if (log.type === "income") income += Number(log.amount || 0);
+        if (log.type === "expense") expenses += Number(log.amount || 0);
+
+        const div = document.createElement("div");
+        div.className = "list-item";
+        div.innerHTML = `
+          <div><strong>${log.title}</strong></div>
+          <div class="${log.type}">${log.type === "income" ? "+" : "-"}$${Number(log.amount).toFixed(2)}</div>
+          <div class="small">${new Date(log.created_at).toLocaleString()}</div>
+        `;
+        logsList.appendChild(div);
+      });
+
+      totalIncome.textContent = income.toFixed(2);
+      totalExpenses.textContent = expenses.toFixed(2);
+      balance.textContent = (income - expenses).toFixed(2);
+    }
+
+    async function loadMyGoals() {
+      const { data, error } = await supabase
+        .from("goals")
+        .select("*")
+        .eq("user_id", currentUser.id)
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        goalsList.innerHTML = "<p>Could not load goals.</p>";
+        console.error(error);
+        return;
+      }
+
+      goalsList.innerHTML = "";
+      goalCount.textContent = data.length;
+
+      if (!data.length) {
+        goalsList.innerHTML = "<p>No goals yet.</p>";
+        return;
+      }
+
+      data.forEach((goal) => {
+        const div = document.createElement("div");
+        div.className = "list-item";
+        div.innerHTML = `
+          <div><strong>${goal.title}</strong></div>
+          <div>Category: ${goal.category || "General"}</div>
+          <div>Progress: ${goal.current} / ${goal.target}</div>
+        `;
+        goalsList.appendChild(div);
+      });
+    }
+
+    async function addMyMoneyLog() {
+      const title = moneyTitle.value.trim();
+      const amount = parseFloat(moneyAmount.value);
+      const type = moneyType.value;
+
+      if (!title || isNaN(amount) || amount <= 0) {
+        alert("Enter a valid title and amount.");
+        return;
+      }
+
+      const { error } = await supabase
+        .from("money_logs")
+        .insert({
+          user_id: currentUser.id,
+          title,
+          amount,
+          type
+        });
+
+      if (error) {
+        alert(error.message);
+        return;
+      }
+
+      moneyTitle.value = "";
+      moneyAmount.value = "";
+      moneyType.value = "income";
+
+      await loadMyLogs();
+      if (isStaff()) await loadLeaderboard();
+    }
+
+    async function addMyGoal() {
+      const title = goalTitle.value.trim();
+      const target = parseFloat(goalTarget.value);
+      const category = goalCategory.value.trim() || "General";
+
+      if (!title || isNaN(target) || target <= 0) {
+        alert("Enter a valid goal and target.");
+        return;
+      }
+
+      const { error } = await supabase
+        .from("goals")
+        .insert({
+          user_id: currentUser.id,
+          title,
+          target,
+          current: 0,
+          category
+        });
+
+      if (error) {
+        alert(error.message);
+        return;
+      }
+
+      goalTitle.value = "";
+      goalTarget.value = "";
+      goalCategory.value = "";
+
+      await loadMyGoals();
+    }
+
+    async function loadStudents() {
+      if (!isStaff()) return;
+
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("id, full_name, role")
+        .eq("role", "student")
+        .order("full_name");
+
+      if (error) {
+        console.error(error);
+        return;
+      }
+
+      allStudents = data || [];
+      studentFilter.innerHTML = "";
+
+      allStudents.forEach((student) => {
+        const option = document.createElement("option");
+        option.value = student.id;
+        option.textContent = student.full_name || "Unnamed Student";
+        studentFilter.appendChild(option);
+      });
+
+      if (allStudents.length && !selectedStudentId) {
+        selectedStudentId = allStudents[0].id;
+      }
+
+      if (selectedStudentId) {
+        studentFilter.value = selectedStudentId;
+      }
+    }
+
+    async function loadSelectedStudentLogs() {
+      if (!selectedStudentId) {
+        adminLogsList.innerHTML = "<p>No student selected.</p>";
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from("money_logs")
+        .select("*")
+        .eq("user_id", selectedStudentId)
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        adminLogsList.innerHTML = "<p>Could not load student logs.</p>";
+        console.error(error);
+        return;
+      }
+
+      adminLogsList.innerHTML = "";
+
+      if (!data.length) {
+        adminLogsList.innerHTML = "<p>No logs for this student.</p>";
+        return;
+      }
+
+      data.forEach((log) => {
+        const div = document.createElement("div");
+        div.className = "list-item";
+        div.innerHTML = `
+          <div><strong>${log.title}</strong></div>
+          <div class="${log.type}">${log.type === "income" ? "+" : "-"}$${Number(log.amount).toFixed(2)}</div>
+          <div class="small">${new Date(log.created_at).toLocaleString()}</div>
+        `;
+        adminLogsList.appendChild(div);
+      });
+    }
+
+    async function loadSelectedStudentGoals() {
+      if (!selectedStudentId) {
+        adminGoalsList.innerHTML = "<p>No student selected.</p>";
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from("goals")
+        .select("*")
+        .eq("user_id", selectedStudentId)
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        adminGoalsList.innerHTML = "<p>Could not load student goals.</p>";
+        console.error(error);
+        return;
+      }
+
+      adminGoalsList.innerHTML = "";
+
+      if (!data.length) {
+        adminGoalsList.innerHTML = "<p>No goals for this student.</p>";
+        return;
+      }
+
+      data.forEach((goal) => {
+        const div = document.createElement("div");
+        div.className = "list-item";
+        div.innerHTML = `
+          <div><strong>${goal.title}</strong></div>
+          <div>Category: ${goal.category || "General"}</div>
+          <div>Progress: ${goal.current} / ${goal.target}</div>
+        `;
+        adminGoalsList.appendChild(div);
+      });
+    }
+
+    async function loadLeaderboard() {
+      if (!isStaff()) return;
+
+      const { data: students, error: studentsError } = await supabase
+        .from("profiles")
+        .select("id, full_name")
+        .eq("role", "student");
+
+      if (studentsError) {
+        console.error(studentsError);
+        return;
+      }
+
+      const { data: logs, error: logsError } = await supabase
+        .from("money_logs")
+        .select("user_id, amount, type");
+
+      if (logsError) {
+        console.error(logsError);
+        return;
+      }
+
+      const board = students.map((student) => {
+        const studentLogs = logs.filter((l) => l.user_id === student.id);
+        const income = studentLogs.filter((l) => l.type === "income").reduce((sum, l) => sum + Number(l.amount), 0);
+        const expenses = studentLogs.filter((l) => l.type === "expense").reduce((sum, l) => sum + Number(l.amount), 0);
+
+        return {
+          name: student.full_name || "Unnamed Student",
+          income,
+          expenses,
+          balance: income - expenses
+        };
+      }).sort((a, b) => b.balance - a.balance);
+
+      leaderboardList.innerHTML = "";
+
+      if (!board.length) {
+        leaderboardList.innerHTML = "<p>No students yet.</p>";
+        return;
+      }
+
+      board.forEach((item, index) => {
+        const div = document.createElement("div");
+        div.className = "list-item";
+        div.innerHTML = `
+          <div><strong>#${index + 1} ${item.name}</strong></div>
+          <div>Income: $${item.income.toFixed(2)}</div>
+          <div>Expenses: $${item.expenses.toFixed(2)}</div>
+          <div>Balance: $${item.balance.toFixed(2)}</div>
+        `;
+        leaderboardList.appendChild(div);
+      });
+    }
+
+    async function addMoneyForStudent() {
+      if (!selectedStudentId) {
+        alert("Select a student first.");
+        return;
+      }
+
+      const title = adminMoneyTitle.value.trim();
+      const amount = parseFloat(adminMoneyAmount.value);
+      const type = adminMoneyType.value;
+
+      if (!title || isNaN(amount) || amount <= 0) {
+        alert("Enter a valid title and amount.");
+        return;
+      }
+
+      const { error } = await supabase
+        .from("money_logs")
+        .insert({
+          user_id: selectedStudentId,
+          title,
+          amount,
+          type
+        });
+
+      if (error) {
+        alert(error.message);
+        return;
+      }
+
+      adminMoneyTitle.value = "";
+      adminMoneyAmount.value = "";
+      adminMoneyType.value = "income";
+
+      await loadSelectedStudentLogs();
+      await loadLeaderboard();
+    }
+
+    async function addGoalForStudent() {
+      if (!selectedStudentId) {
+        alert("Select a student first.");
+        return;
+      }
+
+      const title = adminGoalTitle.value.trim();
+      const target = parseFloat(adminGoalTarget.value);
+      const category = adminGoalCategory.value.trim() || "General";
+
+      if (!title || isNaN(target) || target <= 0) {
+        alert("Enter a valid goal and target.");
+        return;
+      }
+
+      const { error } = await supabase
+        .from("goals")
+        .insert({
+          user_id: selectedStudentId,
+          title,
+          target,
+          current: 0,
+          category
+        });
+
+      if (error) {
+        alert(error.message);
+        return;
+      }
+
+      adminGoalTitle.value = "";
+      adminGoalTarget.value = "";
+      adminGoalCategory.value = "";
+
+      await loadSelectedStudentGoals();
+    }
+
+    async function refreshAdminData() {
+      await loadStudents();
+      await loadSelectedStudentLogs();
+      await loadSelectedStudentGoals();
+      await loadLeaderboard();
+    }
+
+    async function loadApp() {
+      await loadProfile();
+      await loadMyLogs();
+      await loadMyGoals();
+
+      if (isStaff()) {
+        navAdminBtn.classList.remove("hidden");
+        await refreshAdminData();
+      } else {
+        navAdminBtn.classList.add("hidden");
+      }
+
+      showAppScreen();
+      showDashboardPage();
+    }
+
+    async function checkSession() {
+      const { data } = await supabase.auth.getSession();
+      currentUser = data.session?.user || null;
+
+      if (currentUser) {
+        currentProfile = await ensureProfile(currentUser);
+        await loadApp();
+      } else {
+        showLoginScreen();
+      }
+    }
+
+    studentFilter.addEventListener("change", async (e) => {
+      selectedStudentId = e.target.value;
+      await loadSelectedStudentLogs();
+      await loadSelectedStudentGoals();
+    });
+
+    loginBtn.addEventListener("click", login);
+    signupBtn.addEventListener("click", signup);
+    forgotBtn.addEventListener("click", forgotPassword);
+    logoutBtn.addEventListener("click", logout);
+
+    navDashboardBtn.addEventListener("click", showDashboardPage);
+    navAdminBtn.addEventListener("click", async () => {
+      await refreshAdminData();
+      showAdminPage();
+    });
+
+    saveNameBtn.addEventListener("click", saveFullNameFn);
+    addMoneyBtn.addEventListener("click", addMyMoneyLog);
+    addGoalBtn.addEventListener("click", addMyGoal);
+
+    adminAddMoneyBtn.addEventListener("click", addMoneyForStudent);
+    adminAddGoalBtn.addEventListener("click", addGoalForStudent);
+    refreshAdminBtn.addEventListener("click", refreshAdminData);
+
+    checkSession();
+  </script>
 </body>
 </html>
