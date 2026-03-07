@@ -810,20 +810,43 @@ const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
       await loadMyGoals();
     }
 
-    async function loadStudents() {
-      if (!isStaff()) return;
+   async function loadStudents() {
 
-      const { data, error } = await supabase
-        .from("profiles")
-        .select("id, full_name, role")
-        .eq("role", "student")
-        .order("full_name");
+  if (!isStaff()) return;
 
-      if (error) {
-        console.error(error);
-        return;
-      }
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("id, full_name, role")
+    .order("full_name");
 
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  allStudents = data || [];
+  studentFilter.innerHTML = "";
+
+  allStudents.forEach((user) => {
+    const option = document.createElement("option");
+
+    option.value = user.id;
+
+    option.textContent =
+      (user.full_name || "Unnamed User") +
+      " (" + user.role + ")";
+
+    studentFilter.appendChild(option);
+  });
+
+  if (allStudents.length && !selectedStudentId) {
+    selectedStudentId = allStudents[0].id;
+  }
+
+  if (selectedStudentId) {
+    studentFilter.value = selectedStudentId;
+  }
+}
       allStudents = data || [];
       studentFilter.innerHTML = "";
 
