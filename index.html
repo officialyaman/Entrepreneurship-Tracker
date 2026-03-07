@@ -811,6 +811,7 @@ const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
     }
     
 async function loadStudents() {
+
   if (!isStaff()) return;
 
   const { data, error } = await supabase
@@ -841,12 +842,6 @@ async function loadStudents() {
     studentFilter.value = selectedStudentId;
   }
 }
-
-      if (selectedStudentId) {
-        studentFilter.value = selectedStudentId;
-      }
-    }
-
     async function loadSelectedStudentLogs() {
       if (!selectedStudentId) {
         adminLogsList.innerHTML = "<p>No student selected.</p>";
