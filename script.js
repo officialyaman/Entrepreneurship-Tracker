@@ -4,6 +4,25 @@
 const SUPABASE_URL = "https://hrcaisojgvuulwubaqez.supabase.co";
 const SUPABASE_ANON_KEY = "YOUR_ANON_KEY_HERE";
 
+async function resetPassword() {
+  const email = document.getElementById("email").value.trim();
+
+  if (!email) {
+    alert("Enter your email first.");
+    return;
+  }
+
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin
+  });
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  alert("Password reset email sent.");
+}
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const authBox = document.getElementById("authBox");
