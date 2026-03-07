@@ -369,7 +369,11 @@
               <input id="adminGoalTarget" type="number" step="0.01" placeholder="Target" />
               <input id="adminGoalCategory" type="text" placeholder="Category" />
               <button id="adminAddGoalBtn">Add Student Goal</button>
-            </div>
+              <div class="card">
+              <h3>Reset Selected Student Password</h3>
+              <input id="adminNewPassword" type="text" placeholder="New password">
+              <button id="adminResetPasswordBtn">Set New Password</button>
+              </div>
           </div>
 
           <div class="card">
@@ -450,6 +454,8 @@ const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
     const leaderboardList = document.getElementById("leaderboardList");
     const adminGoalsList = document.getElementById("adminGoalsList");
     const adminLogsList = document.getElementById("adminLogsList");
+    const adminNewPassword = document.getElementById("adminNewPassword");
+    const adminResetPasswordBtn = document.getElementById("adminResetPasswordBtn");
 
     const adminMoneyTitle = document.getElementById("adminMoneyTitle");
     const adminMoneyAmount = document.getElementById("adminMoneyAmount");
@@ -1086,6 +1092,7 @@ const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
     adminAddMoneyBtn.addEventListener("click", addMoneyForStudent);
     adminAddGoalBtn.addEventListener("click", addGoalForStudent);
     refreshAdminBtn.addEventListener("click", refreshAdminData);
+    adminResetPasswordBtn.addEventListener("click", resetStudentPassword);
 
     checkSession();
   </script>
