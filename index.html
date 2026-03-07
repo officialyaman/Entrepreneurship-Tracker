@@ -371,7 +371,18 @@
       <button id="adminAddGoalBtn">Add Student Goal</button>
     </div>
   </div>
+          
+    <div class="card">
+  <h3>Change User Role</h3>
 
+  <select id="adminRoleSelect">
+    <option value="student">Student</option>
+    <option value="teacher">Teacher</option>
+    <option value="admin">Admin</option>
+  </select>
+
+  <button id="adminChangeRoleBtn">Change Role</button>
+</div>
   <div class="card">
     <h3>Reset Selected Student Password</h3>
     <input id="adminNewPassword" type="text" placeholder="New password" />
@@ -461,6 +472,8 @@ const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
     const adminMoneyAmount = document.getElementById("adminMoneyAmount");
     const adminMoneyType = document.getElementById("adminMoneyType");
     const adminAddMoneyBtn = document.getElementById("adminAddMoneyBtn");
+    const adminRoleSelect = document.getElementById("adminRoleSelect");
+    const adminChangeRoleBtn = document.getElementById("adminChangeRoleBtn");
 
     const adminGoalTitle = document.getElementById("adminGoalTitle");
     const adminGoalTarget = document.getElementById("adminGoalTarget");
@@ -879,6 +892,28 @@ const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
         .eq("user_id", selectedStudentId)
         .order("created_at", { ascending: false });
 
+      async function changeUserRole() {
+
+  if (!selectedStudentId) {
+    alert("Select a user first.");
+    return;
+  }
+
+  const newRole = adminRoleSelect.value;
+
+  const { error } = await supabase
+    .from("profiles")
+    .update({ role: newRole })
+    .eq("id", selectedStudentId);
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  alert("Role updated successfully.");
+  await refreshAdminData();
+}
       if (error) {
         adminGoalsList.innerHTML = "<p>Could not load student goals.</p>";
         console.error(error);
@@ -1145,6 +1180,7 @@ const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
     adminAddGoalBtn.addEventListener("click", addGoalForStudent);
     refreshAdminBtn.addEventListener("click", refreshAdminData);
     adminResetPasswordBtn.addEventListener("click", resetStudentPassword);
+    adminChangeRoleBtn.addEventListener("click", changeUserRole);
 
     checkSession();
   </script>
